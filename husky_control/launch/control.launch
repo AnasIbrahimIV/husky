@@ -5,10 +5,6 @@
 
   <node name="base_controller_spawner" pkg="controller_manager" type="spawner" args="husky_joint_publisher husky_velocity_controller --shutdown-timeout 3"/>
 
-  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization">
-    <rosparam command="load" file="$(find husky_control)/config/localization.yaml" />
-  </node>
-
   <node pkg="interactive_marker_twist_server" type="marker_server" name="twist_marker_server" output="screen"/>
 
   <node pkg="twist_mux" type="twist_mux" name="twist_mux">
@@ -16,4 +12,18 @@
     <remap from="cmd_vel_out" to="husky_velocity_controller/cmd_vel"/>
   </node>
 
+  <!-- original -->
+  <!--node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization">
+    <rosparam command="load" file="$(find husky_control)/config/localization.yaml" />
+  </node-->
+  <!-- using our localizaiton using GPS and IMU-->
+  <include file="$(find mineprobe_bringup)/launch/gnss-and-odom/gnss_odom_navsat_transform.launch" >
+    <arg name="imu_data_topic" value="imu/data"/>
+    <arg name="gps_fix_topic" value="navsat/fix"/>
+  </include>
+  <include file="$(find mineprobe_localization)/launch/ekf-ukf/ekf_localization.launch" >
+    <arg name="imu_topic" value="imu/data"/>
+  </include>
+
 </launch>
+
