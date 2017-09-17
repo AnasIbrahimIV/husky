@@ -18,11 +18,11 @@
   </node-->
   <!-- using our localizaiton using GPS and IMU-->
   <include file="$(find mineprobe_bringup)/launch/gnss-and-odom/gnss_odom_navsat_transform.launch" >
-    <arg name="imu_data_topic" value="imu/data"/>
-    <arg name="gps_fix_topic" value="navsat/fix"/>
+    <arg name="imu_data_topic" value="imu_enu/data"/>
+    <arg name="gps_fix_topic" value="gps/fix"/>
   </include>
   <include file="$(find mineprobe_localization)/launch/ekf-ukf/ekf_localization.launch" >
-    <arg name="imu_topic" value="imu/data"/>
+    <arg name="imu_topic" value="imu_enu/data"/>
   </include>
 
 </launch>
